@@ -1,4 +1,5 @@
 using RevisionAnglais.Models;
+using RevisionAnglais.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,6 +21,9 @@ namespace RevisionAnglais
             Percentage = TotalCount > 0 ? (CorrectCount * 100.0) / TotalCount : 0;
 
             UpdateUI(answers);
+            
+            // Sauvegarder les statistiques
+            SaveStatistics();
         }
 
         private void UpdateUI(List<Answer> answers)
@@ -93,6 +97,20 @@ namespace RevisionAnglais
 
                 resultBorder.Child = stackPanel;
                 ResultsPanel.Children.Add(resultBorder);
+            }
+        }
+
+        private void SaveStatistics()
+        {
+            try
+            {
+                var statisticsService = new StatisticsService();
+                var session = new SessionStatistics(TotalCount, CorrectCount, Percentage);
+                statisticsService.SaveSession(session);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la sauvegarde des statistiques: {ex.Message}", "Erreur");
             }
         }
 

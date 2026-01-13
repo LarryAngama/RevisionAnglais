@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RevisionAnglais"
         mc:Ignorable="d"
-        Title="Revision Anglais - Past Simple" Height="500" Width="700" WindowStartupLocation="CenterScreen" Background="#F5F5F5">
+        Title="Revision Anglais - Past Simple" Height="700" Width="900" WindowStartupLocation="CenterScreen" Background="#F5F5F5">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
 
         <!-- Contenu principal -->
-        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
             <TextBlock Text="Revision Anglais" FontSize="48" FontWeight="Bold" Foreground="#2196F3" TextAlignment="Center" Margin="0,0,0,20"/>
             <TextBlock Text="Verbes Irreguliers - Past Simple" FontSize="24" Foreground="#666" TextAlignment="Center" Margin="0,0,0,40"/>
             
-            <Border Background="White" CornerRadius="10" Margin="20" Width="400">
+            <Border Background="White" CornerRadius="10" Margin="20">
                 <StackPanel Margin="40">
                     <TextBlock Text="Bienvenue!" FontSize="18" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
                     <TextBlock Text="Cette application vous aide a reviser les 113 verbes irreguliers les plus courants en anglais au Past Simple." 
@@ -34,7 +34,23 @@
             </Border>
         </StackPanel>
 
-        <!-- Pied de page -->
-        <TextBlock Grid.Row="1" Text="Bonne chance!" FontSize="12" Foreground="#999" TextAlignment="Center" Margin="0,0,0,10"/>
+        <!-- Historique des sessions -->
+        <Border Grid.Column="1" Background="White" Margin="0,0,20,20" CornerRadius="10">
+            <StackPanel>
+                <Border Background="#E3F2FD" Padding="15" CornerRadius="10,10,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Historique des revisions" FontSize="14" FontWeight="Bold" Foreground="#333"/>
+                        <Button Grid.Column="1" x:Name="ClearButton" Click="ClearButton_Click" Content="Effacer" FontSize="10" Padding="5,2" Background="#f44336" Foreground="White"/>
+                    </Grid>
+                </Border>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0">
+                    <StackPanel x:Name="HistoryPanel" Margin="15"/>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
