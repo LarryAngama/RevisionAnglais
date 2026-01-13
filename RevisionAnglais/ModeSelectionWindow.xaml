@@ -1,0 +1,43 @@
+<Window x:Class="RevisionAnglais.ModeSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Selection du Mode de Revision" Height="500" Width="600" WindowStartupLocation="CenterScreen">
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" Margin="0,0,0,20">
+            <StackPanel Margin="20">
+                <TextBlock Text="Choisissez le mode de revision" FontSize="20" FontWeight="Bold" Foreground="#333"/>
+                <TextBlock Text="Selectionnez votre mode d'apprentissage prefere" FontSize="12" Foreground="#666" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Mode Classique -->
+            <Border Background="White" CornerRadius="10" Padding="30" Width="400" MouseDown="ClassicMode_Click" Cursor="Hand" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Mode Classique" FontSize="18" FontWeight="Bold" Foreground="#2196F3" Margin="0,0,0,10"/>
+                    <TextBlock Text="Reponses a choix multiples" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                    <TextBlock Text="Choix: 4 options disponibles" FontSize="11" Foreground="#999"/>
+                    <TextBlock Text="Difficulte: Facile" FontSize="11" Foreground="#4CAF50" FontWeight="Bold" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Mode Avance -->
+            <Border Background="White" CornerRadius="10" Padding="30" Width="400" MouseDown="AdvancedMode_Click" Cursor="Hand" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Mode Avance" FontSize="18" FontWeight="Bold" Foreground="#FF9800" Margin="0,0,0,10"/>
+                    <TextBlock Text="Saisie librement la reponse" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                    <TextBlock Text="Type: Clavier" FontSize="11" Foreground="#999"/>
+                    <TextBlock Text="Difficulte: Moyen/Difficile" FontSize="11" Foreground="#f44336" FontWeight="Bold" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Bouton Retour -->
+            <Button x:Name="BackButton" Click="BackButton_Click" Content="Retour a la Selection" Width="150" Margin="0,20,0,0" Background="#757575" Foreground="White" FontSize="12" Padding="10"/>
+        </StackPanel>
+    </Grid>
+</Window>

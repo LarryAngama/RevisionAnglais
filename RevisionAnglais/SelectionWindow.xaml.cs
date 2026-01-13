@@ -74,8 +74,10 @@ namespace RevisionAnglais
             // Sauvegarder la selection
             _persistenceService.SavePreferences(_selectedVerbs);
 
-            ExcerciseWindows exerciseWindow = new ExcerciseWindows(_selectedVerbs);
-            exerciseWindow.Show();
+            // Afficher la fenetre de selection du mode
+            ModeSelectionWindow modeWindow = new ModeSelectionWindow(_selectedVerbs);
+            modeWindow.Show();
+            this.Close();
         }
     }
 }

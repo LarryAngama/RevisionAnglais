@@ -20,7 +20,7 @@ namespace RevisionAnglais
         private List<Answer> _allAnswers;
         private int _questionCount;
 
-        public ExcerciseWindows(List<VerbIrregulier> verbs)
+        public ExcerciseWindows(List<VerbIrregulier> verbs, bool isAdvanced = false)
         {
             InitializeComponent();
             _random = new Random();
@@ -116,12 +116,12 @@ namespace RevisionAnglais
             {
                 _correctAnswers++;
                 button.Background = new SolidColorBrush(Color.FromRgb(76, 175, 80)); // Vert
-                MessageBox.Show($"Correct! 🎉\", \"\r\r Verbe à l'infinitif:{_currentVerb.Infinitif} \r Past simple: {_currentVerb.PastSimple} \r Traduction: {_currentVerb.Traduction}", "Bravo !");
+                MessageBox.Show($"Correct! 🎉\nVerbe à l'infinitif: {_currentVerb.Infinitif}\nPast simple: {_currentVerb.PastSimple}\nTraduction: {_currentVerb.Traduction}", "Bravo !");
             }
             else
             {
                 button.Background = new SolidColorBrush(Color.FromRgb(244, 67, 54)); // Rouge
-                MessageBox.Show($"Incorrect! La reponse etait: \r\r Verbe à l'infinitif:{_currentVerb.Infinitif} \r Past simple: {_currentVerb.PastSimple} \r Traduction: {_currentVerb.Infinitif}", "Essayez encore");
+                MessageBox.Show($"Incorrect! La reponse etait:\nVerbe à l'infinitif: {_currentVerb.Infinitif}\nPast simple: {_currentVerb.PastSimple}\nTraduction: {_currentVerb.Traduction}", "Essayez encore");
             }
 
             _totalAnswers++;
