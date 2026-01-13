@@ -1,0 +1,40 @@
+﻿<Window x:Class="RevisionAnglais.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RevisionAnglais"
+        mc:Ignorable="d"
+        Title="Revision Anglais - Past Simple" Height="500" Width="700" WindowStartupLocation="CenterScreen" Background="#F5F5F5">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Contenu principal -->
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Revision Anglais" FontSize="48" FontWeight="Bold" Foreground="#2196F3" TextAlignment="Center" Margin="0,0,0,20"/>
+            <TextBlock Text="Verbes Irreguliers - Past Simple" FontSize="24" Foreground="#666" TextAlignment="Center" Margin="0,0,0,40"/>
+            
+            <Border Background="White" CornerRadius="10" Margin="20" Width="400">
+                <StackPanel Margin="40">
+                    <TextBlock Text="Bienvenue!" FontSize="18" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+                    <TextBlock Text="Cette application vous aide a reviser les 113 verbes irreguliers les plus courants en anglais au Past Simple." 
+                               TextWrapping="Wrap" Foreground="#666" Margin="0,0,0,30"/>
+                    
+                    <TextBlock Text="Fonctionnalites:" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
+                    <TextBlock Text="- Selectionnez les verbes a reviser" Foreground="#666" Margin="0,0,0,5"/>
+                    <TextBlock Text="- Exercices interactifs de memorisation" Foreground="#666" Margin="0,0,0,5"/>
+                    <TextBlock Text="- Suivi de votre progression" Foreground="#666" Margin="0,0,0,30"/>
+                    
+                    <Button x:Name="StartButton" Click="StartButton_Click" Content="Commencer la Revision" 
+                            Padding="15" FontSize="16" FontWeight="Bold" Background="#4CAF50" Foreground="White" Height="50"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Pied de page -->
+        <TextBlock Grid.Row="1" Text="Bonne chance!" FontSize="12" Foreground="#999" TextAlignment="Center" Margin="0,0,0,10"/>
+    </Grid>
+</Window>
