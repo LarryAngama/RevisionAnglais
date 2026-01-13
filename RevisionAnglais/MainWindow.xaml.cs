@@ -19,7 +19,7 @@ namespace RevisionAnglais
             LoadHistory();
         }
 
-        private void LoadHistory()
+        internal void LoadHistory()
         {
             var sessions = _statisticsService.LoadAllSessions();
             HistoryPanel.Children.Clear();

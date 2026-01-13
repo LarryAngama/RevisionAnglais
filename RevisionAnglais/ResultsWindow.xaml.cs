@@ -1,4 +1,4 @@
-using RevisionAnglais.Models;
+﻿using RevisionAnglais.Models;
 using RevisionAnglais.Services;
 using System.Windows;
 using System.Windows.Controls;
@@ -67,7 +67,7 @@ namespace RevisionAnglais
                 var statusPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 10) };
                 var statusIcon = new TextBlock
                 {
-                    Text = answer.IsCorrect ? "? CORRECT" : "? INCORRECT",
+                    Text = answer.IsCorrect ? "✓ CORRECT" : "✗ INCORRECT",
                     FontWeight = FontWeights.Bold,
                     Foreground = answer.IsCorrect 
                         ? new SolidColorBrush(Color.FromRgb(76, 175, 80))
@@ -107,6 +107,12 @@ namespace RevisionAnglais
                 var statisticsService = new StatisticsService();
                 var session = new SessionStatistics(TotalCount, CorrectCount, Percentage);
                 statisticsService.SaveSession(session);
+                
+                // Actualiser l'historique dans la fenetre principale
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    mainWindow.LoadHistory();
+                }
             }
             catch (Exception ex)
             {
