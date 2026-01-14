@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/publish/">
+    <File Path="RevisionAnglais/bin/publish/RevisionAnglaisPublish.zip" />
+  </Folder>
   <Project Path="RevisionAnglais/RevisionAnglais.csproj" />
 </Solution>

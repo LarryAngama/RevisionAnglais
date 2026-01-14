@@ -129,6 +129,7 @@ namespace RevisionAnglais.Services
                 new VerbIrregulier(111, "win", "won", "gagner"),
                 new VerbIrregulier(112, "wind", "wound", "enrouler"),
                 new VerbIrregulier(113, "write", "wrote", "écrire"),
+                new VerbIrregulier(113, "mean", "meant", "signifier"),
             };
         }
 

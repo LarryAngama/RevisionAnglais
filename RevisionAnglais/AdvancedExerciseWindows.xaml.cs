@@ -1,28 +1,18 @@
 ﻿using RevisionAnglais.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RevisionAnglais
 {
-    /// <summary>
-    /// Logique d'interaction pour AdvancedExerciseWindows.xaml
-    /// </summary>
     public partial class AdvancedExerciseWindows : Window
     {
-        private List<VerbIrregulier> _verbs;
-        private List<VerbIrregulier> _allVerbs;
-        private Random _random;
+        private List<(VerbIrregulier verb, int questionType)> _questions;
+        private int _currentQuestionIndex;
         private int _correctAnswers;
-        private int _totalAnswers;
         private VerbIrregulier _currentVerb;
         private List<Answer> _allAnswers;
         private int _questionCount;
@@ -32,28 +22,49 @@ namespace RevisionAnglais
         public AdvancedExerciseWindows(List<VerbIrregulier> verbs)
         {
             InitializeComponent();
-            _random = new Random();
-            _allVerbs = new List<VerbIrregulier>(verbs);
-            _verbs = verbs.OrderBy(x => _random.Next()).ToList();
+            _currentQuestionIndex = 0;
             _correctAnswers = 0;
-            _totalAnswers = 0;
             _allAnswers = new List<Answer>();
-            _questionCount = _verbs.Count;
+            
+            // Créer la liste de questions : 3 types par verbe
+            _questions = new List<(VerbIrregulier, int)>();
+            var random = new Random();
+            
+            foreach (var verb in verbs)
+            {
+                // Créer une liste de 3 types de questions [0, 1, 2]
+                var questionTypes = new List<int> { 0, 1, 2 };
+                
+                // Mélanger les types de questions
+                questionTypes = questionTypes.OrderBy(x => random.Next()).ToList();
+                
+                // Ajouter chaque type de question pour ce verbe
+                foreach (var type in questionTypes)
+                {
+                    _questions.Add((verb, type));
+                }
+            }
+            
+            // Mélanger l'ordre de toutes les questions
+            _questions = _questions.OrderBy(x => random.Next()).ToList();
+            
+            _questionCount = _questions.Count;
             _answered = false;
-            _currentVerb = _verbs.Count > 0 ? _verbs[0] : new VerbIrregulier(0, string.Empty, string.Empty, string.Empty);
+            
             LoadNextQuestion();
         }
 
         private void LoadNextQuestion()
         {
-            if (_verbs.Count == 0)
+            if (_currentQuestionIndex >= _questions.Count)
             {
                 ShowResults();
                 return;
             }
 
-            _currentVerb = _verbs[_random.Next(_verbs.Count)];
-            _questionType = _random.Next(3);
+            var (verb, questionType) = _questions[_currentQuestionIndex];
+            _currentVerb = verb;
+            _questionType = questionType;
             _answered = false;
 
             // Afficher la question
@@ -111,9 +122,6 @@ namespace RevisionAnglais
                 DisplayIncorrectFeedback(userAnswer);
             }
 
-            _totalAnswers++;
-            _verbs.Remove(_currentVerb);
-
             AnswerTextBox.IsEnabled = false;
             NextButton.IsEnabled = true;
             SkipButton.IsEnabled = false;
@@ -154,7 +162,7 @@ namespace RevisionAnglais
 
             var titleText = new TextBlock
             {
-                Text = "? CORRECT!",
+                Text = "✓ CORRECT!",
                 FontSize = 16,
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Color.FromRgb(76, 175, 80)),
@@ -206,7 +214,7 @@ namespace RevisionAnglais
 
             var titleText = new TextBlock
             {
-                Text = "? INCORRECT!",
+                Text = "✗ INCORRECT!",
                 FontSize = 16,
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Color.FromRgb(244, 67, 54)),
@@ -262,10 +270,10 @@ namespace RevisionAnglais
 
         private void UpdateProgress()
         {
-            ProgressText.Text = $"Question {_totalAnswers + 1}/{_questionCount}";
-            if (_totalAnswers > 0)
+            ProgressText.Text = $"Question {_currentQuestionIndex + 1}/{_questionCount}";
+            if (_currentQuestionIndex > 0)
             {
-                double percentage = (_correctAnswers * 100.0) / _totalAnswers;
+                double percentage = (_correctAnswers * 100.0) / _currentQuestionIndex;
                 ScoreText.Text = $"Score actuel: {percentage:F1}%";
             }
             else
@@ -280,9 +288,6 @@ namespace RevisionAnglais
             {
                 // Enregistrer comme incorrect
                 _allAnswers.Add(new Answer(_currentVerb, false));
-                _totalAnswers++;
-                _verbs.Remove(_currentVerb);
-
                 DisplayIncorrectFeedback("(Passé)");
                 AnswerTextBox.IsEnabled = false;
                 NextButton.IsEnabled = true;
@@ -292,6 +297,7 @@ namespace RevisionAnglais
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
+            _currentQuestionIndex++;
             LoadNextQuestion();
             AnswerTextBox.IsEnabled = true;
         }

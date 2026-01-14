@@ -10,52 +10,76 @@ namespace RevisionAnglais
 {
     public partial class ExcerciseWindows : Window
     {
-        private List<VerbIrregulier> _verbs;
+        private List<(VerbIrregulier verb, int questionType)> _questions;
+        private int _currentQuestionIndex;
+        private int _correctAnswers;
         private List<VerbIrregulier> _allVerbs;
         private Random _random;
-        private int _correctAnswers;
-        private int _totalAnswers;
         private VerbIrregulier _currentVerb;
         private List<VerbIrregulier> _options;
         private List<Answer> _allAnswers;
         private int _questionCount;
+        private int _questionType;
 
         public ExcerciseWindows(List<VerbIrregulier> verbs, bool isAdvanced = false)
         {
             InitializeComponent();
             _random = new Random();
             _allVerbs = new List<VerbIrregulier>(verbs);
-            _verbs = verbs.OrderBy(x => _random.Next()).ToList();
             _correctAnswers = 0;
-            _totalAnswers = 0;
             _allAnswers = new List<Answer>();
-            _questionCount = _verbs.Count;
-            _currentVerb = _verbs.Count > 0 ? _verbs[0] : new VerbIrregulier(0, string.Empty, string.Empty, string.Empty);
+            _currentQuestionIndex = 0;
+            
+            // Créer la liste de questions : 3 types par verbe
+            _questions = new List<(VerbIrregulier, int)>();
+            
+            foreach (var verb in verbs)
+            {
+                // Créer une liste de 3 types de questions [0, 1, 2]
+                var questionTypes = new List<int> { 0, 1, 2 };
+                
+                // Mélanger les types de questions
+                questionTypes = questionTypes.OrderBy(x => _random.Next()).ToList();
+                
+                // Ajouter chaque type de question pour ce verbe
+                foreach (var type in questionTypes)
+                {
+                    _questions.Add((verb, type));
+                }
+            }
+            
+            // Mélanger l'ordre de toutes les questions
+            _questions = _questions.OrderBy(x => _random.Next()).ToList();
+            
+            _questionCount = _questions.Count;
+            _currentVerb = _questions.Count > 0 ? _questions[0].verb : new VerbIrregulier(0, string.Empty, string.Empty, string.Empty);
             _options = new List<VerbIrregulier>();
             LoadNextQuestion();
         }
 
         private void LoadNextQuestion()
         {
-            if (_verbs.Count == 0)
+            if (_currentQuestionIndex >= _questions.Count)
             {
                 // Fin du test - afficher les resultats
                 ShowResults();
                 return;
             }
 
-            _currentVerb = _verbs[_random.Next(_verbs.Count)];
+            var (verb, questionType) = _questions[_currentQuestionIndex];
+            _currentVerb = verb;
+            _questionType = questionType;
+            
             _options = GenerateOptions(_currentVerb);
 
             // Afficher la question
-            int questionType = _random.Next(3);
-            switch (questionType)
+            switch (_questionType)
             {
                 case 0: // Infinitif -> Past Simple
                     QuestionText.Text = $"Quel est le Past Simple de '{_currentVerb.Infinitif}' ?";
                     break;
                 case 1: // Traduction -> Past Simple
-                    QuestionText.Text = $"Traduisez et conjuguez : '{_currentVerb.Traduction}' (infinitif au past simple) ?";
+                    QuestionText.Text = $"Traduisez et conjuguez : '{_currentVerb.Traduction}' (au past simple) ?";
                     break;
                 case 2: // Past Simple -> Traduction
                     QuestionText.Text = $"Que signifie '{_currentVerb.PastSimple}' (past simple) ?";
@@ -71,7 +95,7 @@ namespace RevisionAnglais
             {
                 var button = new System.Windows.Controls.Button
                 {
-                    Content = GetOptionDisplay(option, questionType),
+                    Content = GetOptionDisplay(option, _questionType),
                     Padding = new Thickness(15),
                     Margin = new Thickness(5),
                     FontSize = 14,
@@ -124,21 +148,17 @@ namespace RevisionAnglais
                 MessageBox.Show($"Incorrect! La reponse etait:\nVerbe à l'infinitif: {_currentVerb.Infinitif}\nPast simple: {_currentVerb.PastSimple}\nTraduction: {_currentVerb.Traduction}", "Essayez encore");
             }
 
-            _totalAnswers++;
-            
-            // Supprimer le verbe de la liste des questions
-            _verbs.Remove(_currentVerb);
-            
-            // Charger la question suivante ou afficher les resultats
+            // Passer a la question suivante
+            _currentQuestionIndex++;
             LoadNextQuestion();
         }
 
         private void UpdateProgress()
         {
-            ProgressText.Text = $"Question {_totalAnswers + 1}/{_questionCount}";
-            if (_totalAnswers > 0)
+            ProgressText.Text = $"Question {_currentQuestionIndex + 1}/{_questionCount}";
+            if (_currentQuestionIndex > 0)
             {
-                double percentage = (_correctAnswers * 100.0) / _totalAnswers;
+                double percentage = (_correctAnswers * 100.0) / _currentQuestionIndex;
                 ScoreText.Text = $"Score actuel: {percentage:F1}%";
             }
             else

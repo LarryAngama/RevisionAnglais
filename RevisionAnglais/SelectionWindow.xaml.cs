@@ -2,6 +2,7 @@ using RevisionAnglais.Models;
 using RevisionAnglais.Services;
 using System.Windows;
 using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RevisionAnglais
 {
@@ -24,7 +25,8 @@ namespace RevisionAnglais
 
         private void InitializeUI()
         {
-            var verbs = _verbService.GetAllVerbs();
+            var verbs = _verbService.GetAllVerbs().OrderBy(o => o.Infinitif);
+            nbVerbDisponibles.Text = verbs.Count() + " verbes irreguliers disponibles";
             foreach (var verb in verbs)
             {
                 var checkBox = new CheckBox
@@ -33,6 +35,7 @@ namespace RevisionAnglais
                     Tag = verb,
                     Margin = new Thickness(5),
                     IsChecked = _savedVerbIds.Contains(verb.Id)
+                    
                 };
                 VerbsPanel.Children.Add(checkBox);
             }
