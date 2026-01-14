@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/Éléments de solution/">
+    <File Path="RevisionAnglais/bin/publish/RevisionAnglais.zip" />
+  </Folder>
   <Project Path="RevisionAnglais/RevisionAnglais.csproj" />
 </Solution>
